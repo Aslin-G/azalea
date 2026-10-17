@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Privacidad: la aplicación no puede conectarse a ningún servidor, excepto (solo por acción explícita del usuario)
+       al proveedor del Asistente IA en línea y a la API pública de NASA POWER (solo coordenadas, fechas y parámetros).
+       Para añadir otro proveedor compatible con OpenAI, agregue su host aquí. -->
+  <meta http-equiv="Content-Security-Policy" content="connect-src https://api.deepseek.com https://api.openai.com https://power.larc.nasa.gov; form-action 'none'">
+  <title>SEGAR SOLAR ENERGY DECISIÓN IA</title>
+  <meta name="description" content="Plataforma Offline-First de Machine Learning para análisis, predicción y toma de decisiones en sistemas solares fotovoltaicos">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    /* Tema antes de pintar (evita parpadeo) */
+    (function () {
+      var t = 'light';
+      try { t = localStorage.getItem('seda-theme') || (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (e) {}
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ===================== MENÚ LATERAL ===================== -->
+  <aside class="sidebar" id="sidebar" aria-label="Menú principal">
+    <div class="brand">
+      <img class="brand-logo" src="assets/logo.svg" alt="">
+      <div>
+        <div class="brand-name"><span class="brand-segar">SEGAR</span>SOLAR ENERGY<br>DECISIÓN IA</div>
+        <div class="brand-sub">☀ ML · ⚡ Energía · 🌎</div>
+      </div>
+    </div>
+    <nav class="nav" id="nav">
+      <div class="nav-group">
+        <div class="nav-group-title">Decisión</div>
+        <button class="nav-item" data-page="dashboard"><span class="ico">📊</span>Dashboard ejecutivo</button>
+        <button class="nav-item" data-page="metodologia"><span class="ico">🎓</span>Metodología (7 pasos)</button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Proyecto FV</div>
+        <button class="nav-item" data-page="sitio"><span class="ico">🌍</span>Sitio y NASA POWER<span class="nav-new">NUEVO</span></button>
+        <button class="nav-item" data-page="diseno"><span class="ico">🧩</span>Diseño del sistema<span class="nav-new">NUEVO</span></button>
+        <button class="nav-item" data-page="costos"><span class="ico">💲</span>Costos y presupuesto<span class="nav-new">NUEVO</span></button>
+        <button class="nav-item" data-page="manual"><span class="ico">📘</span>Manual de instalación<span class="nav-new">NUEVO</span></button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Datos</div>
+        <button class="nav-item" data-page="importar" data-step="1"><span class="ico">📂</span>Importar datos<span class="step-dot"></span></button>
+        <button class="nav-item" data-page="mapeo" data-step="2"><span class="ico">🔗</span>Mapeo de variables<span class="step-dot"></span></button>
+        <button class="nav-item" data-page="validacion" data-step="3"><span class="ico">✔️</span>Validación<span class="step-dot"></span></button>
+        <button class="nav-item" data-page="limpieza" data-step="4"><span class="ico">🧹</span>Limpieza y preprocesamiento<span class="step-dot"></span></button>
+        <button class="nav-item" data-page="datos"><span class="ico">🗂️</span>Brutos vs procesados</button>
+        <button class="nav-item" data-page="exploracion" data-step="5"><span class="ico">🔎</span>Exploración<span class="step-dot"></span></button>
+        <button class="nav-item" data-page="historico"><span class="ico">📅</span>Análisis histórico</button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Machine Learning</div>
+        <button class="nav-item" data-page="modelo" data-step="7"><span class="ico">🤖</span>Configurar y entrenar<span class="step-dot"></span></button>
+        <button class="nav-item" data-page="evaluacion" data-step="9"><span class="ico">📈</span>Evaluación<span class="step-dot"></span></button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Operación</div>
+        <button class="nav-item" data-page="prediccion" data-step="10"><span class="ico">☀️</span>Predicción solar<span class="step-dot"></span></button>
+        <button class="nav-item" data-page="decision" data-step="11"><span class="ico">🔋</span>Decisión energética<span class="step-dot"></span></button>
+        <button class="nav-item" data-page="escenarios" data-step="13"><span class="ico">🧪</span>¿Qué pasaría si?<span class="step-dot"></span></button>
+        <button class="nav-item" data-page="simulacion"><span class="ico">🛰️</span>Simulación interactiva</button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Comunicación</div>
+        <button class="nav-item" data-page="informe" data-step="14"><span class="ico">📄</span>Informe<span class="step-dot"></span></button>
+        <button class="nav-item" data-page="historial"><span class="ico">🗃️</span>Historial de operaciones</button>
+        <button class="nav-item" data-page="sistema"><span class="ico">⚙️</span>Sistema y privacidad</button>
+      </div>
+    </nav>
+    <div class="side-foot">
+      <div><strong>● MODO OFFLINE ACTIVO</strong></div>
+      <div>Procesamiento 100 % local en este navegador.</div>
+      <div>Asistente IA y NASA POWER: opcionales, en línea.</div>
+      <div id="storage-status" style="margin-top:6px">Almacenamiento: verificando…</div>
+    </div>
+  </aside>
+
+  <!-- ===================== ÁREA PRINCIPAL ===================== -->
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menu-btn" aria-label="Abrir menú">☰</button>
+      <h2 class="page-title" id="page-title"><span class="crumb">SEGAR SOLAR ENERGY DECISIÓN IA</span>Dashboard</h2>
+      <div class="topbar-right">
+        <span class="chip synthetic hidden" id="chip-synthetic">⚠ DATOS SINTÉTICOS</span>
+        <span class="chip run" id="chip-run" title="Identificador de la operación actual">RUN —</span>
+        <div class="offline-badge" role="status">
+          <span class="ob-main"><span class="dot">●</span> MODO OFFLINE ACTIVO</span>
+          <span class="ob-sub">Los datos permanecen en este dispositivo.</span>
+        </div>
+        <button class="icon-btn" id="theme-btn" title="Cambiar tema claro/oscuro" aria-label="Cambiar tema">◐</button>
+      </div>
+    </header>
+    <div class="synthetic-banner app-banner hidden" id="synthetic-banner">⚠ DATOS SINTÉTICOS DE DEMOSTRACIÓN — NO SON DATOS REALES</div>
+    <div class="stepper" id="stepper" aria-label="Flujo de trabajo"></div>
+
+    <main class="content" id="content">
+      <section class="page" id="page-dashboard"></section>
+      <section class="page" id="page-metodologia"></section>
+      <section class="page" id="page-sitio"></section>
+      <section class="page" id="page-diseno"></section>
+      <section class="page" id="page-costos"></section>
+      <section class="page" id="page-manual"></section>
+      <section class="page" id="page-importar"></section>
+      <section class="page" id="page-mapeo"></section>
+      <section class="page" id="page-validacion"></section>
+      <section class="page" id="page-limpieza"></section>
+      <section class="page" id="page-datos"></section>
+      <section class="page" id="page-exploracion"></section>
+      <section class="page" id="page-historico"></section>
+      <section class="page" id="page-modelo"></section>
+      <section class="page" id="page-evaluacion"></section>
+      <section class="page" id="page-prediccion"></section>
+      <section class="page" id="page-decision"></section>
+      <section class="page" id="page-escenarios"></section>
+      <section class="page" id="page-simulacion"></section>
+      <section class="page" id="page-informe"></section>
+      <section class="page" id="page-historial"></section>
+      <section class="page" id="page-sistema"></section>
+
+      <div class="privacy app-privacy">
+        <span>🔒</span>
+        <div><strong>Privacidad:</strong> los datos son procesados localmente y no son enviados a servidores externos.
+          Las únicas conexiones posibles son opcionales y las inicia usted: el <b>Asistente IA en modo en línea</b> (envía su pregunta y un resumen
+          agregado de resultados; los datos brutos nunca salen del equipo) y la <b>consulta a NASA POWER</b> (envía solo coordenadas, fechas y nombres de parámetros).</div>
+      </div>
+    </main>
+    <footer class="footer">SEGAR SOLAR ENERGY DECISIÓN IA · Plataforma Offline-First de Machine Learning para análisis, predicción y toma de decisiones en sistemas solares fotovoltaicos · v2.0</footer>
+  </div>
+</div>
+
+<!-- Entradas de archivo ocultas -->
+<input type="file" id="file-excel" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" hidden>
+<input type="file" id="file-csv" accept=".csv,.txt,text/csv,text/plain" hidden>
+<input type="file" id="file-config" accept=".json,application/json" hidden>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div id="modal-root"></div>
+
+<!-- Librería local para Excel (SheetJS Community Edition, Apache-2.0) — sin CDN -->
+<script src="js/lib/xlsx.full.min.js"></script>
+<!-- Núcleo de la aplicación -->
+<script src="js/util.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/mapping.js"></script>
+<script src="js/importer.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/quality.js"></script>
+<script src="js/ml.js"></script>
+<script src="js/decision.js"></script>
+<script src="js/specs.js"></script>
+<script src="js/report.js"></script>
+<script src="js/exports.js"></script>
+<script src="js/views-core.js"></script>
+<script src="js/views-data.js"></script>
+<script src="js/views-model.js"></script>
+<script src="js/views-ops.js"></script>
+<script src="js/views-report.js"></script>
+<script src="js/simulation.js"></script>
+<!-- Proyecto FV: mapa offline (Natural Earth), NASA POWER, diseñador, costos y manual -->
+<script src="js/data/world.js"></script>
+<script src="js/solar.js"></script>
+<script src="js/nasa.js"></script>
+<script src="js/worldmap.js"></script>
+<script src="js/designer.js"></script>
+<script src="js/costs.js"></script>
+<script src="js/manual.js"></script>
+<script src="js/views-project.js"></script>
+<script src="js/assistant.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
